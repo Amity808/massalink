@@ -75,7 +75,7 @@ export function WalletProvider({ children }: PropsWithChildren) {
         try {
             const wallets = await getWallets();
             const wallet = wallets.find(
-                (candidate) => candidate.name() === WalletName.MassaWallet,
+                (candidate: { name: () => WalletName }) => candidate.name() === WalletName.MassaWallet,
             );
             if (!wallet) {
                 setError("MassaWallet not detected");

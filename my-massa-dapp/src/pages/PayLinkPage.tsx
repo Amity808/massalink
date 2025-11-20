@@ -3,7 +3,6 @@ import { useParams } from "react-router-dom";
 import { useWallet } from "../context/WalletContext";
 import { useToast } from "../context/ToastContext";
 import { getPaymentLinkData, payToLinkOnChain } from "../lib/contractClient";
-import { ConnectPrompt } from "../components/common/ConnectPrompt";
 
 interface LinkData {
     recipientAddress: string;
