@@ -234,16 +234,17 @@ export async function getPaymentLinkData(linkId: string): Promise<{
         const args = new Args().addString(linkId);
 
         const result = await client.executeReadOnlyCall({
-            targetAddress: CONTRACT_ADDRESS,
-            targetFunction: "getPaymentLink",
+            target: CONTRACT_ADDRESS,
+            func: "getPaymentLink",
             parameter: args.serialize(),
+            caller: "AU0000000000000000000000000000000000000000000000000000000000000", // Dummy caller for read-only
         });
 
-        if (!result.result || result.result.returnData.length === 0) {
+        if (!result.value || result.value.length === 0) {
             throw new Error("Payment link not found");
         }
 
-        const linkDataStr = bytesToStr(result.result.returnData);
+        const linkDataStr = bytesToStr(result.value);
         const parts = linkDataStr.split("|");
 
         if (parts.length < 3) {
