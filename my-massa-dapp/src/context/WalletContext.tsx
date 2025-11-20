@@ -7,10 +7,10 @@ import {
     useState,
 } from "react";
 import { Provider } from "@massalabs/massa-web3";
-import { getWallets, WalletName } from "@massalabs/wallet-provider";
+import { providers, IProvider } from "@massalabs/wallet-provider";
 
 interface WalletContextValue {
-    provider?: Provider;
+    provider?: Provider | any; // IAccount from wallet-provider can be used as Provider
     address?: string;
     nativeBalance: bigint;
     isConnecting: boolean;
@@ -41,14 +41,14 @@ const normalizeBalance = (value: unknown): bigint => {
 };
 
 export function WalletProvider({ children }: PropsWithChildren) {
-    const [provider, setProvider] = useState<Provider>();
+    const [provider, setProvider] = useState<Provider | any>();
     const [address, setAddress] = useState<string>();
     const [nativeBalance, setNativeBalance] = useState<bigint>(0n);
     const [isConnecting, setIsConnecting] = useState(false);
     const [error, setError] = useState<string>();
 
     const fetchNativeBalance = useCallback(
-        async (source?: Provider) => {
+        async (source?: Provider | any) => {
             const current = source ?? provider;
             if (
                 !current ||
@@ -73,9 +73,9 @@ export function WalletProvider({ children }: PropsWithChildren) {
         setIsConnecting(true);
         setError(undefined);
         try {
-            const wallets = await getWallets();
+            const wallets = await providers();
             const wallet = wallets.find(
-                (candidate: { name: () => WalletName }) => candidate.name() === WalletName.MassaWallet,
+                (candidate: IProvider) => candidate.name() === "MassaWallet",
             );
             if (!wallet) {
                 setError("MassaWallet not detected");
