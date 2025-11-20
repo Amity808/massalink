@@ -1,0 +1,392 @@
+.app-shell {
+  display: flex;
+  min-height: 100vh;
+  background: var(--surface-alt);
+}
+
+.sidebar {
+  width: 250px;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.sidebar__brand {
+  font-weight: 700;
+  font-size: 1.25rem;
+}
+
+.sidebar__section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.sidebar__label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  letter-spacing: 0.08em;
+}
+
+.sidebar__nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.sidebar__link {
+  padding: 0.65rem 0.75rem;
+  border-radius: 0.65rem;
+  color: #213547;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.sidebar__link:hover {
+  background: var(--surface-alt);
+}
+
+.sidebar__link--active {
+  background: var(--primary-soft);
+  color: var(--primary);
+}
+
+.content-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.topbar {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 1.25rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.main-content {
+  flex: 1;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.card {
+  background: var(--surface);
+  border-radius: 1rem;
+  border: 1px solid var(--border);
+  padding: 1.5rem;
+  box-shadow: var(--shadow);
+}
+
+.card__title {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.card__subtitle {
+  margin: 0.25rem 0 1.25rem;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+.btn {
+  border: none;
+  border-radius: 0.75rem;
+  padding: 0.55rem 1.2rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 150ms ease, box-shadow 150ms ease;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn--primary {
+  background: var(--primary);
+  color: #fff;
+}
+
+.btn--secondary {
+  background: #eef2ff;
+  color: #1e3a8a;
+}
+
+.btn--ghost {
+  background: transparent;
+  color: var(--text-muted);
+}
+
+.btn--danger {
+  background: var(--danger);
+  color: #fff;
+}
+
+.grid {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.grid--two {
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+.grid--three {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+.grid--four {
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+.kpi {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.kpi__label {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.kpi__value {
+  font-size: 1.75rem;
+  font-weight: 700;
+}
+.kpi__delta {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th,
+.table td {
+  padding: 0.75rem 0.5rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.15rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.badge--success {
+  background: rgba(0, 198, 174, 0.15);
+  color: var(--success);
+}
+
+.badge--warning {
+  background: rgba(255, 176, 32, 0.15);
+  color: var(--warning);
+}
+
+.badge--danger {
+  background: rgba(255, 77, 79, 0.15);
+  color: var(--danger);
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--success);
+}
+
+.status-dot--warning {
+  background: var(--warning);
+}
+
+.status-dot--danger {
+  background: var(--danger);
+}
+
+.form-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.form-group label {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.input,
+.textarea,
+.select {
+  padding: 0.65rem 0.85rem;
+  border-radius: 0.65rem;
+  border: 1px solid var(--border);
+  font-size: 0.95rem;
+  background: #fff;
+}
+
+.textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.helper-text {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.error-text {
+  font-size: 0.8rem;
+  color: var(--danger);
+}
+
+.pill {
+  border-radius: 999px;
+  padding: 0.2rem 0.75rem;
+  font-size: 0.75rem;
+  background: var(--surface-alt);
+}
+
+.event-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.event-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.event-item__meta {
+  display: flex;
+  flex-direction: column;
+}
+
+.event-item__type {
+  text-transform: capitalize;
+  font-weight: 600;
+}
+
+.empty-state {
+  padding: 1.5rem;
+  border: 1px dashed var(--border);
+  border-radius: 1rem;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+.split {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.split > * {
+  flex: 1 1 320px;
+}
+
+.toast-stack {
+  position: fixed;
+  top: 1.5rem;
+  right: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  z-index: 999;
+}
+
+.toast {
+  min-width: 240px;
+  padding: 0.85rem 1.1rem;
+  border-radius: 0.75rem;
+  box-shadow: var(--shadow);
+  font-weight: 600;
+  color: #fff;
+  background: #1f2937;
+}
+
+.toast--success {
+  background: var(--success);
+}
+
+.toast--error {
+  background: var(--danger);
+}
+
+.toast--info {
+  background: var(--primary);
+}
+
+.tabs {
+  display: inline-flex;
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+
+.tabs button {
+  border: none;
+  background: transparent;
+  padding: 0.5rem 1.25rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.tabs button.active {
+  background: var(--primary);
+  color: #fff;
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+@media (max-width: 960px) {
+  .sidebar {
+    display: none;
+  }
+  .content-area {
+    width: 100%;
+  }
+  .topbar {
+    position: static;
+  }
+  .main-content {
+    padding: 1.25rem;
+  }
+}
