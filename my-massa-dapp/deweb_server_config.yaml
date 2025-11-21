@@ -1,12 +1,12 @@
 domain: "massa.network"
-network_node_url: "https://mainnet.massa.net/api/v2"
+network_node_url: "https://buildnet.massa.net/api/v2"
 api_port: 8080
 allow_list:
   - "massaNameService"
   - ""
 block_list:
   - "massaNameService"
-  - "AS1S...4x3o"
+  - "AS12g3GBGCEUdDdSyX7H2iyazwTFTfheRgWZuLuCTYKnTdsDCUsHX"
 misc_public_info: {
   "tips": {
     "BTC": "1PMyg9yJe9Y8zS3bD2N4e6w2F7K6Rmyt7B",

@@ -1,0 +1,14 @@
+{
+  "node_url": "https://buildnet.massa.net/api/v2",
+  "secret_key": "",
+  "chunk_size": 1000000,
+  "metadata": {
+    "TITLE": "Payment Link Platform",
+    "DESCRIPTION": "A decentralized payment link platform for receiving MAS tokens on the Massa blockchain",
+    "KEYWORD1": "payment",
+    "KEYWORD2": "massa",
+    "KEYWORD3": "blockchain",
+    "KEYWORD4": "crypto",
+    "KEYWORD5": "web3"
+  }
+}

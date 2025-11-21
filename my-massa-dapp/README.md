@@ -19,7 +19,9 @@ Welcome to the frontend Massa Boilerplate! This project serves as a starting poi
   ```sh
   npm run dev
   ```
-
+  › Website deployed at AS12g3GBGCEUdDdSyX7H2iyazwTFTfheRgWZuLuCTYKnTdsDCUsHX
+  pnpm run build
+npx @massalabs/deweb-cli upload ./dist --address AS12g3GBGCEUdDdSyX7H2iyazwTFTfheRgWZuLuCTYKnTdsDCUsHX
 ## Scripts
 
 - `npm run dev`: Start the development server.
