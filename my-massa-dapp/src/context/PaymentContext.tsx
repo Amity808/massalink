@@ -138,7 +138,7 @@ export function PaymentProvider({ children }: PropsWithChildren) {
     );
 
     const payToNameAction = useCallback(
-        async (name: string, amount: number, memo?: string) => {
+        async (name: string, amount: number, _memo?: string) => {
             if (!provider) {
                 throw new Error("Wallet not connected");
             }
