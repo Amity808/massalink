@@ -17,15 +17,11 @@ import {
     getAddressForName,
     getDashboardSnapshot,
     getEvents,
-    getLinks,
     getPaymentLinkRaw,
     isNameAvailable,
-    recordPaymentToLink,
-    recordPaymentToName,
     registerName,
-    withdraw,
 } from "../lib/mockPaymentService";
-import { registerNameOnChain, getRegisteredNameForAddress, createPaymentLinkOnChain, payToNameOnChain, payToLinkOnChain } from "../lib/contractClient";
+import { registerNameOnChain, getRegisteredNameForAddress, createPaymentLinkOnChain, payToNameOnChain, payToLinkOnChain, getMyLinksOnChain, getBalanceOnChain, withdrawOnChain } from "../lib/contractClient";
 import { useWallet } from "./WalletContext";
 
 interface PaymentContextValue {
@@ -66,26 +62,32 @@ export function PaymentProvider({ children }: PropsWithChildren) {
         }
         setIsLoading(true);
         try {
-            const [snap, userLinks, history, registeredName] = await Promise.all([
+            const [snap, onChainLinks, history, registeredName, contractBalance] = await Promise.all([
                 getDashboardSnapshot(address),
-                getLinks(address),
+                getMyLinksOnChain(address),
                 getEvents(address),
-                provider ? getRegisteredNameForAddress(provider, address) : Promise.resolve(null),
+                getRegisteredNameForAddress(provider!, address),
+                getBalanceOnChain(address),
             ]);
 
-            console.log("Loaded payment data:", {
-                address,
-                registeredName,
-                mockSnapshotName: snap?.registeredName,
-            });
+            const paymentLinks: PaymentLink[] = onChainLinks.map((link) => ({
+                id: link.id,
+                description: link.description,
+                amountType: link.amount === null ? "any" : "fixed",
+                targetAmount: link.amount || undefined,
+                totalReceived: link.totalReceived || 0,
+                createdAt: new Date().toISOString(),
+            }));
 
-            // Merge the on-chain registered name with the snapshot (on-chain takes priority)
-            const enrichedSnapshot = registeredName
-                ? { ...snap, registeredName }
-                : snap;
+            const enrichedSnapshot = {
+                ...snap,
+                registeredName: registeredName || snap?.registeredName,
+                totalLinks: paymentLinks.length,
+                contractBalance: contractBalance,
+            };
 
             setSnapshot(enrichedSnapshot);
-            setLinks(userLinks);
+            setLinks(paymentLinks);
             setEvents(history);
         } catch (error) {
             console.error("Failed to load payment data", error);
@@ -106,11 +108,8 @@ export function PaymentProvider({ children }: PropsWithChildren) {
             setIsRegistering(true);
             try {
                 await registerNameOnChain(provider, name);
-                // Update mock service to stay in sync
                 await registerName(address, name);
-                // Wait a bit for storage to finalize, then reload
                 await new Promise((resolve) => setTimeout(resolve, 2000));
-                // Reload to fetch the registered name from contract
                 await load();
             } finally {
                 setIsRegistering(false);
@@ -127,9 +126,7 @@ export function PaymentProvider({ children }: PropsWithChildren) {
             setIsProcessing(true);
             try {
                 const linkId = await createPaymentLinkOnChain(provider, description, amount);
-                // Update mock service to stay in sync
                 await createPaymentLink(address, { description, amount });
-                // Wait a bit for storage to finalize, then reload
                 await new Promise((resolve) => setTimeout(resolve, 2000));
                 await load();
                 return linkId;
@@ -148,9 +145,6 @@ export function PaymentProvider({ children }: PropsWithChildren) {
             setIsProcessing(true);
             try {
                 const operationId = await payToNameOnChain(provider, name, amount);
-                // Update mock service to stay in sync
-                await recordPaymentToName(name, amount, memo);
-                // Wait a bit for storage to finalize, then reload
                 await new Promise((resolve) => setTimeout(resolve, 2000));
                 await load();
                 return operationId;
@@ -169,9 +163,6 @@ export function PaymentProvider({ children }: PropsWithChildren) {
             setIsProcessing(true);
             try {
                 const operationId = await payToLinkOnChain(provider, linkId, amount);
-                // Update mock service to stay in sync
-                await recordPaymentToLink(linkId, amount);
-                // Wait a bit for storage to finalize, then reload
                 await new Promise((resolve) => setTimeout(resolve, 2000));
                 await load();
                 return operationId;
@@ -183,16 +174,25 @@ export function PaymentProvider({ children }: PropsWithChildren) {
     );
 
     const withdrawFunds = useCallback(async () => {
-        if (!address) return;
+        if (!provider || !address) {
+            throw new Error("Wallet not connected");
+        }
         setIsProcessing(true);
         try {
-            const amount = await withdraw(address);
+            const balanceBefore = await getBalanceOnChain(address);
+            if (balanceBefore <= 0) {
+                throw new Error("No balance to withdraw");
+            }
+
+            await withdrawOnChain(provider);
+            await new Promise((resolve) => setTimeout(resolve, 2000));
             await load();
-            return amount;
+
+            return balanceBefore;
         } finally {
             setIsProcessing(false);
         }
-    }, [address, load]);
+    }, [address, provider, load]);
 
     const value = useMemo(
         () => ({

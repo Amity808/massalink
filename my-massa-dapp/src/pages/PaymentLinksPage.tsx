@@ -16,6 +16,7 @@ export function PaymentLinksPage() {
         return <ConnectPrompt />;
     }
 
+
     const handleSubmit = async (event: FormEvent) => {
         event.preventDefault();
         const parsedAmount = anyAmount || !amount ? undefined : Number(amount);
@@ -141,7 +142,11 @@ export function PaymentLinksPage() {
                                     <tr key={link.id}>
                                         <td>{link.id}</td>
                                         <td>{link.description}</td>
-                                        <td>{link.amountType === "any" ? "Any" : link.targetAmount}</td>
+                                        <td>
+                                            {link.amountType === "any"
+                                                ? "Any"
+                                                : link.targetAmount?.toFixed(2) + " MAS"}
+                                        </td>
                                         <td>
                                             <code style={{ fontSize: "0.85rem", wordBreak: "break-all" }}>
                                                 {paymentUrl}
